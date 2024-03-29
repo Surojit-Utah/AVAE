@@ -16,7 +16,7 @@ import random
 import nvidia_smi
 import argparse
 import socket
-TARGET_FLOAT_EPS = 1e-30
+TARGET_FLOAT_EPS = 1e-31
 
 
 def select_GPU(min_gpu_mem_frac=0.9):
