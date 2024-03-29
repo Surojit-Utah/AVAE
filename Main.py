@@ -16,7 +16,7 @@ import random
 import nvidia_smi
 import argparse
 import socket
-TARGET_FLOAT_EPS = 1e-31
+TARGET_FLOAT_EPS = 1e-30
 
 
 def select_GPU(min_gpu_mem_frac=0.9):
@@ -160,20 +160,6 @@ def main():
 
     model_trainer_obj = trainer.Train(run_id, encoder, decoder, optimizer, reduce_rl_plateau, encoder_use_batch_norm, decoder_use_batch_norm, train_data_noise, train_from_checkpoint,
     epochs, update_KDE_epoch_fraction, update_q_iter_count, dataloader_obj, latent_dim, bandwidth, max_cdf_epsilon, print_every_epoch, save_every_epoch, save_model_epochs, dataset_name, sigma_init_val)
-
-    # print("Encoder initialization         : " + str(encoder.initializer))
-    # print("Encoder Batch Normalization    : " + str(model_trainer_obj.encoder_use_batch_norm))
-    # print("Decoder initialization         : " + str(decoder.initializer))
-    # print("Decoder Batch Normalization    : " + str(model_trainer_obj.decoder_use_batch_norm))
-    # print("Decoder Param Regularization   : " + str(decoder.reg_strength))
-    # print("Latent dimension               : " + str(model_trainer_obj.latent_dim))
-    # print("Encoded epsilon                : " + str(model_trainer_obj.ENCODED_FLOAT_EPS))
-    # print("KDE bandwidth                  : " + str(model_trainer_obj.bandwidth))
-    # print("Epochs for KDE update          : " + str(model_trainer_obj.update_KDE_epoch_fraction))
-    # print("Update Q Iter Count            : " + str(model_trainer_obj.update_q_iter_count))
-    # print("Dataset name                   : " + str(model_trainer_obj.dataset_name))
-    # print("Sigma2 init value              : " + str(model_trainer_obj.sigma_init_val))
-    # input()
 
     ###########################
     # File Pointers for Logging
