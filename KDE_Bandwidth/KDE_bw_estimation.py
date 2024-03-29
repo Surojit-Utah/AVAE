@@ -1,10 +1,6 @@
 import argparse
 import os
 from tqdm import tqdm
-import matplotlib
-matplotlib.use('agg')
-import matplotlib.pyplot as plt
-from scipy.stats import chi2
 import numpy as np
 import torch
 torch.set_default_dtype(torch.float64)
@@ -36,16 +32,23 @@ def main():
     parser = argparse.ArgumentParser(description="Experiment runfile, you run experiments from this file")
     parser.add_argument('--latent-dim-list', type=list_of_ints, required=True)
     parser.add_argument('--kde-samples-list', type=list_of_ints, required=True)
+    parser.add_argument("--num-iter", type=int, default=10000)
     parser.add_argument("--num-trial", type=int, default=3)
+    parser.add_argument("--print-stat", type=int, default=100)
+    parser.add_argument("--iter-save-optim-state", type=int, default=1000)
     parser.add_argument("-d", "--device", dest="device", help="Device to run on, the cpu or gpu.",
                         type=str, default="cuda:0")
     parser.add_argument("--debug_mode", type=bool, default=False)
-
     args = parser.parse_args()
-    print(args)
     list_dimension = args.latent_dim_list                   # [40, 70 100]
     list_num_kde_samples = args.kde_samples_list            # [5000, 10000, 20000]
 
+    # Exp config
+    basedir = 'Output'
+    num_iter = args.num_iter
+    num_trial = args.num_trial
+    print_stat = args.print_stat
+    iter_save_optim_state = args.iter_save_optim_state
 
     _, device = torch_init(args.device)
     print("pytorch using device", device)
@@ -57,16 +60,9 @@ def main():
     num_par = 1
 
     # Optimizer configuration
-    num_iter = 1000
     learning_rate = 0.001
     adjust_lr_iter = 2000
     lr_decay_factor = 0.5
-
-    # Exp config
-    basedir = 'Output'
-    num_trial = args.num_trial
-    print_stat = 100
-    iter_save_optim_state = 1000
 
 
     for dim_index in range(len(list_dimension)):
