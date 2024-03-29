@@ -1,0 +1,21 @@
+# Added by SS
+# ignore all .txt files
+*.txt
+
+# ignore all .pdf files
+*.pdf
+
+# ignore all .png files
+*.png
+
+# only ignore the log files in the current directory
+Output/
+logs/
+
+# ignores all .md files
+.md
+
+# does not ignore the README.md file
+!README.md
+
+__pycache__/
