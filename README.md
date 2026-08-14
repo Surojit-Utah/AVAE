@@ -67,7 +67,7 @@ lower bound (ELBO):
 $$
 \max_{\theta, q}\ \mathbb{E}_{\mathbf{x}\sim p(\mathbf{x})}
 \Big\{ \mathbb{E}_{\mathbf{z}\sim q(\mathbf{z})}\log p_\theta(\mathbf{x}\mid\mathbf{z})
-- \operatorname{KL}\!\left(q(\mathbf{z})\,\|\,p(\mathbf{z})\right) \Big\}.
+- \mathrm{KL}\!\left(q(\mathbf{z})\,\|\,p(\mathbf{z})\right) \Big\}.
 $$
 
 Choosing the **per-sample** proposal $q_\phi(\mathbf{z}\mid\mathbf{x})$ recovers the standard
@@ -77,8 +77,8 @@ often fails to match $q_\phi(\mathbf{z})$ to the prior, producing holes/clusters
 the KL term is strengthened — **posterior collapse**, via the identity
 
 $$
-\operatorname{KL}\!\left(q_\phi(\mathbf{z}\mid\mathbf{x})\,\|\,p(\mathbf{z})\right)
-= I(\mathbf{x};\mathbf{z}) + \operatorname{KL}\!\left(q_\phi(\mathbf{z})\,\|\,p(\mathbf{z})\right).
+\mathrm{KL}\!\left(q_\phi(\mathbf{z}\mid\mathbf{x})\,\|\,p(\mathbf{z})\right)
+= I(\mathbf{x};\mathbf{z}) + \mathrm{KL}\!\left(q_\phi(\mathbf{z})\,\|\,p(\mathbf{z})\right).
 $$
 
 ### The AVAE objective
@@ -97,7 +97,7 @@ evaluate the reconstruction term gives the **AVAE objective**:
 $$
 \max_{\theta,\phi}\ \mathbb{E}_{\mathbf{x}\sim p(\mathbf{x})}
 \Big\{ \log p_\theta\!\big(\mathbf{x}\mid \mathbf{E}_\phi(\mathbf{x})\big)
-- \operatorname{KL}\!\left(q_\phi(\mathbf{z})\,\|\,p(\mathbf{z})\right) \Big\}.
+- \mathrm{KL}\!\left(q_\phi(\mathbf{z})\,\|\,p(\mathbf{z})\right) \Big\}.
 $$
 
 Notable design choices:
@@ -140,7 +140,7 @@ Using knowledge of the prior, the **optimal bandwidth** is chosen so a finite-sa
 matches the prior:
 
 $$
-h_{\rm opt} = \min_h \operatorname{KL}\!\left(p(\mathbf{z})\,\|\,q_\phi(\mathbf{z})\right)
+h_{\rm opt} = \min_h \mathrm{KL}\!\left(p(\mathbf{z})\,\|\,q_\phi(\mathbf{z})\right)
 = \max_h\ \mathbb{E}_{\mathbf{z}\sim p(\mathbf{z})}\, q_\phi(\mathbf{z}),
 $$
 
@@ -205,6 +205,13 @@ the KDE will **mis-estimate** $q_\phi(\mathbf{z})$ — too small a bandwidth fra
 into spurious holes/clusters, too large a bandwidth over-smooths and pushes the encoder toward
 collapse. Hence: **re-run `KDE_Bandwidth/` whenever you change the latent dimension or the KDE
 sample count**, and keep `ori_bandwidth`, `latent_dim`, and `kde_samples` mutually consistent.
+
+> **Upcoming (planned integration).** `KDE_Bandwidth/` is currently a separate, manual
+> pre-processing step. It will be **merged into `AVAE/`** so that bandwidth estimation runs
+> automatically as part of training: given `latent_dim` and `kde_samples` from
+> `local_config.py`, the AVAE pipeline will estimate (and cache) the bias-corrected bandwidth
+> on the fly and feed it straight into the loss — removing the manual copy of `ori_bandwidth`
+> and guaranteeing the bandwidth always stays consistent with the configured $(l, m)$.
 
 ### Training algorithm
 
