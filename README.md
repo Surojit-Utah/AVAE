@@ -1,8 +1,10 @@
 # AVAE: Matching Aggregate Posteriors in the Variational Autoencoder
 
+> **Selected for an oral presentation at ICPR 2024.**
+
 Official implementation of **"Matching Aggregate Posteriors in the Variational Autoencoder"**
 by **Surojit Saha, Sarang Joshi, and Ross Whitaker** (Scientific Computing and Imaging
-Institute, University of Utah), published at **ICPR 2025** — selected for an **oral presentation**.
+Institute, University of Utah), published at **ICPR 2024**.
 
 The **Aggregate Variational Autoencoder (AVAE)** reformulates the VAE objective so that the
 **aggregate (marginal) posterior** $`q_\phi(\mathbf{z})`$ — not just the per-sample conditional
