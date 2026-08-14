@@ -403,6 +403,16 @@ The AVAE has **no** such tuning: $\beta$ is set automatically.
 All methods are trained **5 times** per dataset (different seeds); mean ± std reported.
 Competing methods: **VAE**, **$\beta$-TCVAE**, **RAE**, **AAE**, **WAE-MMD** (IMQ kernel).
 
+### Qualitative comparison on CelebA
+
+<p align="center">
+  <img src="images/CelebA_images.png" alt="CelebA: (a) reconstructions and (b) random generations across VAE, beta-TCVAE, RAE, AAE, WAE, and AVAE" width="95%">
+</p>
+
+CelebA comparison across methods: **(a)** reconstructions of ground-truth (GT) faces and
+**(b)** random samples drawn from the prior. The AVAE produces sharp reconstructions and
+diverse, artifact-free generations, consistent with its best FID and recall below.
+
 ### Generative quality — FID ↓ and Precision/Recall ↑
 
 | Method | MNIST FID | Prec | Rec | CelebA FID | Prec | Rec | CIFAR10 FID | Prec | Rec |
