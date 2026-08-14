@@ -1,6 +1,9 @@
 # Paper sources (local only; not tracked)
 Paper/
 
+# Local working notes (not tracked)
+TODO.md
+
 # Python
 __pycache__/
 *.py[cod]
