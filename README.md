@@ -16,6 +16,14 @@ $\beta$.
 
 Code: https://github.com/Surojit-Utah/AVAE
 
+> **Relationship to prior work.** The AVAE is a direct **advancement of
+> [GENs: Generative Encoding Networks](https://link.springer.com/article/10.1007/s10994-022-06220-w)**
+> (Saha, Elhabian & Whitaker, *Machine Learning* **111**(11):4003–4038, 2022). GENs introduced
+> KDE-based aggregate-distribution matching but was **limited to low-dimensional latent spaces**;
+> the AVAE extends that idea into the **VAE framework** with an **automated, bias-corrected KDE
+> bandwidth estimator**, making aggregate-posterior matching viable in **high-dimensional latent
+> spaces ($>100$ dims)** and coupling it with automatic $\beta$ estimation.
+
 ---
 
 ## Table of Contents
@@ -429,6 +437,21 @@ If you use this code or method, please cite:
   author    = {Saha, Surojit and Joshi, Sarang and Whitaker, Ross},
   booktitle = {International Conference on Pattern Recognition (ICPR)},
   year      = {2024}
+}
+```
+
+This work advances **GENs**, which should also be cited:
+
+```bibtex
+@article{saha2022gens,
+  title   = {GENs: generative encoding networks},
+  author  = {Saha, Surojit and Elhabian, Shireen and Whitaker, Ross},
+  journal = {Machine Learning},
+  volume  = {111},
+  number  = {11},
+  pages   = {4003--4038},
+  year    = {2022},
+  doi     = {10.1007/s10994-022-06220-w}
 }
 ```
 
