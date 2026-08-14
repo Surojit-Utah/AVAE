@@ -16,6 +16,8 @@ $\beta$.
 
 Code: https://github.com/Surojit-Utah/AVAE
 
+Paper (arXiv): https://arxiv.org/pdf/2311.07693
+
 > **Relationship to prior work.** The AVAE is a direct **advancement of
 > [GENs: Generative Encoding Networks](https://link.springer.com/article/10.1007/s10994-022-06220-w)**
 > (Saha, Elhabian & Whitaker, *Machine Learning* **111**(11):4003–4038, 2022). GENs introduced
@@ -27,6 +29,7 @@ Code: https://github.com/Surojit-Utah/AVAE
 ---
 
 ## Table of Contents
+- [Motivation](#motivation)
 - [Key Contributions](#key-contributions)
 - [Method](#method)
   - [Background: the ELBO](#background-the-elbo)
@@ -43,6 +46,33 @@ Code: https://github.com/Surojit-Utah/AVAE
 - [Results](#results)
 - [Key Findings](#key-findings)
 - [Citation](#citation)
+
+---
+
+## Motivation
+
+A good latent-variable model should make its **aggregate posterior** $q_\phi(\mathbf{z})$ match
+the prior $\mathcal{N}(\mathbf{0}, \mathbf{I})$ everywhere. Standard VAEs constrain only the
+*per-sample* posterior, so at the aggregate level they leave two visible failure modes that the
+AVAE is designed to remove.
+
+**1. Holes / clusters in the aggregate posterior.** Sampling the prior in regions the model
+never populated yields poor generations. In a 2D latent, the VAE and $\beta$-TCVAE leave
+low-density holes and uneven clusters, whereas the AVAE fills the space like the ground-truth
+isotropic Gaussian:
+
+<p align="center">
+  <img src="images/Distribution_matching.png" alt="2D aggregate posterior: VAE and beta-TCVAE leave holes/clusters; AVAE matches the ground-truth Gaussian" width="95%">
+</p>
+
+**2. Posterior collapse.** When latent axes revert to the prior they carry no information,
+wasting model capacity and hurting reconstruction. On MNIST (l=16), pairwise latent scatter
+plots show collapsed axes (red boxes) for the VAE (4) and $\beta$-TCVAE (7); the AVAE collapses
+**none** — every dimension stays informative and Gaussian:
+
+<p align="center">
+  <img src="images/Posterior_collapse_MNIST.png" alt="Pairwise latent scatter on MNIST: VAE and beta-TCVAE have collapsed axes (red boxes); AVAE has none" width="95%">
+</p>
 
 ---
 
