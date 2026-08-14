@@ -1,6 +1,8 @@
 # AVAE: Matching Aggregate Posteriors in the Variational Autoencoder
 
-> **Selected for an oral presentation at ICPR 2024.**
+<p align="center">
+  <img src="https://img.shields.io/badge/ICPR%202024-Oral%20Presentation-4B0082?style=for-the-badge" alt="Selected for an oral presentation at ICPR 2024">
+</p>
 
 Official implementation of **"Matching Aggregate Posteriors in the Variational Autoencoder"**
 by **Surojit Saha, Sarang Joshi, and Ross Whitaker** (Scientific Computing and Imaging
