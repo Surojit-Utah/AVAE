@@ -52,7 +52,7 @@ Code: https://github.com/Surojit-Utah/AVAE
    principles, **without any modification to the ELBO** and **without extra regularization
    terms/hyperparameters** (unlike FactorVAE / $\beta$-TCVAE / InfoVAE).
 2. **Automated, bias-corrected KDE bandwidth estimation** that enables KDE-based aggregate
-   matching in **high-dimensional latent spaces (dimensions $>100$)** — a limitation of prior
+   matching in **high-dimensional latent spaces ($>100$ dimensions)** — a limitation of prior
    KDE-based matching (GENs).
 3. **Robustness to VAE failure modes**: the AVAE avoids **posterior collapse** and
    **holes/clusters** in the latent space.
@@ -140,7 +140,7 @@ q_\phi(\mathbf{z}) \;\to\; \mathcal{N}\!\big(\mathbf{0},\, \mathbf{I}(1 - h^2)\b
 
 where $(1-h^2)$ is the **bias introduced by the KDE** (a convolution of the kernel with the
 underlying distribution). **Consequence for sampling:** to generate, draw
-$\mathbf{z} \sim \mathcal{N}(\mathbf{0}, \mathbf{I}(1-h^2))$ (not $\mathcal{N}(\mathbf{0},\mathbf{I})$).
+$\mathbf{z} \sim \mathcal{N}(\mathbf{0}, \mathbf{I}(1-h^2))$ — not the standard $\mathcal{N}(\mathbf{0}, \mathbf{I})$.
 
 ### KDE bandwidth estimation (bias-corrected)
 
@@ -162,8 +162,9 @@ and, by setting the variance equal to the KDE bias $\alpha^2 = 1 - (\alpha h_{\r
 \alpha^2 = \frac{1}{1 + h_{\rm opt}^2}, \qquad h_{\rm opt}^{\rm corr} = \alpha\, h_{\rm opt} < 1.
 ```
 
-Because $0 \le \alpha \le 1$, mode collapse is avoided (the system only degenerates as
-$m\to0$ or dimension $\to\infty$). Representative bias-corrected bandwidths ($h_{\rm opt}/h_{\rm opt}^{\rm corr}$):
+Because $0 \le \alpha \le 1$, mode collapse is avoided — the system only degenerates in the
+limits $m \to 0$ or dimension $\to \infty$. Representative bias-corrected bandwidths,
+$h_{\rm opt}$ / $h_{\rm opt}^{\rm corr}$:
 
 | $l$ | $m{=}500$ | $m{=}1000$ | $m{=}2000$ | $m{=}5000$ | $m{=}10000$ |
 |---:|:--:|:--:|:--:|:--:|:--:|
@@ -229,7 +230,7 @@ sample count**, and keep `ori_bandwidth`, `latent_dim`, and `kde_samples` mutual
 3. Initialize encoder $\phi$, decoder $\theta$; initialize $\beta$ from validation reconstruction error.
 4. For each epoch, for each minibatch from $\mathcal{X}^{sgd}$:
    - encode the batch, evaluate the AVAE objective (reconstruction + KL of aggregate posterior via KDE), and update $(\phi,\theta)$ by SGD/Adam;
-   - refresh the KDE latent samples $\mathbf{z}_i' = \mathbf{E}_\phi(\mathbf{x}_i')$ with the current encoder.
+   - refresh the KDE latent samples $\mathbf{z}_i^{\prime} = \mathbf{E}_\phi(\mathbf{x}_i^{\prime})$ with the current encoder.
 5. At epoch end: update $\beta$; **re-sample $\mathcal{X}^{kde}$ at random** (shuffle) and refresh $\mathcal{X}^{sgd}$.
 
 Shuffling the KDE subset every epoch changes $q_\phi(\mathbf{z})$ but does **not** destabilize
@@ -328,7 +329,7 @@ methods for a fair comparison:
 
 | | MNIST | CelebA | CIFAR10 |
 |---|---|---|---|
-| **Encoder** | Conv64→Conv128→Conv256→Conv512 (BN, ReLU) → FC$_{k\times16}$ | Conv64→Conv128→Conv256→Conv512 (BN, ReLU) → FC$_{k\times64}$ | Conv128→Conv256→Conv512→Conv1024 (BN, ReLU) → FC$_{k\times128}$ |
+| **Encoder** | Conv64→Conv128→Conv256→Conv512 (BN, ReLU) → $\mathrm{FC}_{k\times16}$ | Conv64→Conv128→Conv256→Conv512 (BN, ReLU) → $\mathrm{FC}_{k\times64}$ | Conv128→Conv256→Conv512→Conv1024 (BN, ReLU) → $\mathrm{FC}_{k\times128}$ |
 | **Decoder** | FC→TransConv256→128→64→1, Sigmoid | FC→TransConv256→128→64→3, Tanh | FC→TransConv512→256→3, Sigmoid |
 
 - **Filters:** $4\times4$; transpose-conv **stride 2** (except the last decoder layer for
@@ -374,7 +375,7 @@ with precision best/second-best.
 
 ### Latent-space entropy (whitened) ↑ — closeness to Gaussian (higher = fewer holes/clusters)
 
-| Method | MNIST ($l{=}16$) | CelebA ($l{=}64$) | CIFAR10 ($l{=}128$) |
+| Method | MNIST (l = 16) | CelebA (l = 64) | CIFAR10 (l = 128) |
 |---|---:|---:|---:|
 | VAE | 4.71 | 28.88 | 29.56 |
 | $\beta$-TCVAE | 3.44 | 28.42 | 15.02 |
@@ -397,12 +398,12 @@ with precision best/second-best.
 
 ### Ablations
 
-**KDE sample count $m$** (MNIST $l{=}16$, CIFAR10 $l{=}128$): AVAE is strong even with as few
+**KDE sample count $m$** (MNIST l=16, CIFAR10 l=128): AVAE is strong even with as few
 as **$m=1000$** KDE samples, including in the high-dimensional CIFAR10 latent space —
 evidence that the bandwidth estimator is accurate/robust. The paper uses $m=10\text{K}/20\text{K}/10\text{K}$.
 
 **Fixed vs. shuffled KDE subset:** shuffling $\mathcal{X}^{kde}$ each epoch improves FID,
-precision, recall, and MSE (e.g., MNIST FID $15.00\to13.27$; CIFAR10 FID $110.44\to90.93$).
+precision, recall, and MSE (e.g., FID improves from $15.00$ to $13.27$ on MNIST and from $110.44$ to $90.93$ on CIFAR10).
 
 **Compute time per epoch** (NVIDIA TITAN V, 12 GB): comparable to the VAE on CIFAR10 even with
 10K KDE samples (VAE 41.76s vs AVAE 53.38s); on MNIST, $m=1000$ suffices for fast training.
@@ -411,14 +412,14 @@ precision, recall, and MSE (e.g., MNIST FID $15.00\to13.27$; CIFAR10 FID $110.44
 
 ## Key Findings
 
-- **No posterior collapse:** on MNIST ($l{=}16$), the **VAE collapses 4** and **$\beta$-TCVAE
+- **No posterior collapse:** on MNIST (l=16), the **VAE collapses 4** and **$\beta$-TCVAE
   collapses 7** latent axes (consistent across 5 runs); the AVAE collapses none. Collapse
   reduces bottleneck capacity and inflates reconstruction error and FID.
 - **No holes/clusters:** mMDS and pairwise-scatter visualizations show clustering/holes for
   VAE and $\beta$-TCVAE, but a clean, near-Gaussian, uncorrelated latent for the AVAE — the
   highest entropy across datasets.
 - **Scales to high dimensions:** the bias-corrected bandwidth makes KDE-based aggregate
-  matching viable at $l=128$ (CIFAR10) and beyond ($>100$), which prior KDE matching (GENs)
+  matching viable at $l=128$ (CIFAR10) and beyond ($>100$ dims), which prior KDE matching (GENs)
   could not.
 - **Rotation invariance caveat:** because the aggregate posterior is matched to an *isotropic*
   Gaussian (rotation-invariant), the **cardinal latent axes do not correspond to generative
