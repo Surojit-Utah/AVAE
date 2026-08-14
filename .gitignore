@@ -1,0 +1,19 @@
+# Paper sources (local only; not tracked)
+Paper/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# Training / estimation outputs
+Output/
+*.ckpt
+*.h5
+*.npy
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
