@@ -1,0 +1,10 @@
+# AVAE model training (TensorFlow / Keras)
+tensorflow
+numpy
+scipy
+matplotlib
+tqdm
+nvidia-ml-py3
+
+# KDE_Bandwidth estimator (PyTorch)
+torch

@@ -262,12 +262,15 @@ AVAE/
 
 ## Installation
 
-The AVAE is implemented in **TensorFlow / Keras**. A typical environment:
+The AVAE model is implemented in **TensorFlow / Keras**; the standalone
+**`KDE_Bandwidth/`** bandwidth estimator uses **PyTorch**. A typical environment:
 
 ```bash
 conda create -n avae python=3.9
 conda activate avae
-pip install tensorflow numpy scipy matplotlib nvidia-ml-py3
+pip install -r requirements.txt
+# or explicitly:
+# pip install tensorflow numpy scipy matplotlib tqdm nvidia-ml-py3 torch
 ```
 
 > `Main.py` uses `nvidia_smi` (from `nvidia-ml-py3`) to auto-select a free GPU. Adjust
@@ -287,6 +290,13 @@ Benchmarks reported in the paper (with their latent dimensions and KDE sample co
 
 Inputs are scaled to $[0,1]$ for all datasets **except CelebA**, which is mapped to $[-1,1]$.
 The code additionally includes dataloaders/architectures for **DSprites** and **Shapes3D**.
+
+> **Note — shipped config vs. paper.** The table above lists the **paper's** settings. The
+> shipped `AVAE/config/local_config.py` currently holds some **modified/experimental** values,
+> e.g. MNIST `latent_dim=8` and CIFAR10 `latent_dim=90` (instead of 16 and 128), with their
+> own `ori_bandwidth`. To reproduce the paper's reported numbers, set `latent_dim` to
+> **16 / 64 / 128** for MNIST / CelebA / CIFAR10 and use the matching `ori_bandwidth`
+> (re-run `KDE_Bandwidth/` for the chosen `(l, m)`).
 
 ---
 
@@ -315,6 +325,10 @@ prior_std  = sqrt(1 - bandwidth**2)                # sampling std: N(0, I(1-h^2)
 cd AVAE
 python Main.py --run_id 1 --config_id 0
 ```
+
+`--config_id` selects a dataset config from `AVAE/config/local_config.py`. Current mapping:
+`0 = CIFAR10`, `1 = CelebA`, `2 = MNIST`, `3 = DSprites`, `4 = Shapes3D`
+(plus `5, 6, …` Shapes3D variants). Verify the index against the file before running.
 
 Each `--run_id` corresponds to a different random initialization (the paper trains **5 runs**
 per dataset for statistical evaluation). To sample/generate, draw

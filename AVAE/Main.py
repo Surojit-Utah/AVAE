@@ -70,7 +70,7 @@ def main():
     use_gpu, mem_free = select_GPU()
     print("Selected GPU for training : " + str(use_gpu) + " with available memory : " + str(mem_free//(1024*1024*1024)))
 
-    config = configurations[0][args.config_id]
+    config = configurations[args.config_id]
 
     ########################
     # Some Network Constants
