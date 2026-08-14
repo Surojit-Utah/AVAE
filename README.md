@@ -72,11 +72,11 @@ $\max_\theta \mathbb{E}_{\mathbf{x}\sim p(\mathbf{x})}\log p_\theta(\mathbf{x})$
 proposal distribution $q(\mathbf{z})$ and applying Jensen's inequality yields the evidence
 lower bound (ELBO):
 
-$$
+```math
 \max_{\theta, q}\ \mathbb{E}_{\mathbf{x}\sim p(\mathbf{x})}
 \Big\{ \mathbb{E}_{\mathbf{z}\sim q(\mathbf{z})}\log p_\theta(\mathbf{x}\mid\mathbf{z})
 - \mathrm{KL}\!\left(q(\mathbf{z})\,\|\,p(\mathbf{z})\right) \Big\}.
-$$
+```
 
 Choosing the **per-sample** proposal $q_\phi(\mathbf{z}\mid\mathbf{x})$ recovers the standard
 VAE. Because the VAE constrains the conditional posterior rather than the aggregate posterior
@@ -84,29 +84,29 @@ $q_\phi(\mathbf{z}) = \int q_\phi(\mathbf{z}\mid\mathbf{x})\,p(\mathbf{x})\,d\ma
 often fails to match $q_\phi(\mathbf{z})$ to the prior, producing holes/clusters, and — when
 the KL term is strengthened — **posterior collapse**, via the identity
 
-$$
+```math
 \mathrm{KL}\!\left(q_\phi(\mathbf{z}\mid\mathbf{x})\,\|\,p(\mathbf{z})\right)
 = I(\mathbf{x};\mathbf{z}) + \mathrm{KL}\!\left(q_\phi(\mathbf{z})\,\|\,p(\mathbf{z})\right).
-$$
+```
 
 ### The AVAE objective
 
 The AVAE models the **aggregate posterior directly** with a KDE over encoder outputs:
 
-$$
+```math
 q(\mathbf{z}) = \frac{1}{m}\sum_{i=1}^{m} K\!\left(\frac{\lVert \mathbf{z} - \mathbf{z}_i' \rVert}{h}\right),
 \qquad \mathbf{z}_i' = \mathbf{E}_\phi(\mathbf{x}_i'),\ \ \mathbf{x}_i' \in \mathcal{X}^{kde},
-$$
+```
 
 with an isotropic Gaussian kernel of bandwidth $h$. Substituting this aggregate proposal into
 the ELBO and using the deterministic encoding $\mathbf{z} = \mathbf{E}_\phi(\mathbf{x})$ to
 evaluate the reconstruction term gives the **AVAE objective**:
 
-$$
+```math
 \max_{\theta,\phi}\ \mathbb{E}_{\mathbf{x}\sim p(\mathbf{x})}
 \Big\{ \log p_\theta\!\big(\mathbf{x}\mid \mathbf{E}_\phi(\mathbf{x})\big)
 - \mathrm{KL}\!\left(q_\phi(\mathbf{z})\,\|\,p(\mathbf{z})\right) \Big\}.
-$$
+```
 
 Notable design choices:
 - **Deterministic encoder** (no per-axis variance), unlike the VAE — shown empirically not to
@@ -123,20 +123,20 @@ The regularization weight $\beta$ (balancing the KL term against reconstruction)
 **updated every epoch** — from the validation reconstruction error, removing the need for
 cross-validation:
 
-$$
+```math
 \beta \leftarrow \frac{1}{n_{val}}\sum_{i=1}^{n_{val}}
 \big\lVert \mathbf{x}_i'' - \hat{\mathbf{x}}_i'' \big\rVert_2,
 \qquad \mathbf{x}_i'' \in \mathcal{X}^{val}.
-$$
+```
 
 ### Aggregate posterior of the AVAE
 
 For a trained AVAE (zero gradient of the KL term w.r.t. the latent encodings) with prior
 $\mathcal{N}(\mathbf{0},\mathbf{I})$, the aggregate posterior converges **in expectation** to
 
-$$
+```math
 q_\phi(\mathbf{z}) \;\to\; \mathcal{N}\!\big(\mathbf{0},\, \mathbf{I}(1 - h^2)\big),
-$$
+```
 
 where $(1-h^2)$ is the **bias introduced by the KDE** (a convolution of the kernel with the
 underlying distribution). **Consequence for sampling:** to generate, draw
@@ -147,10 +147,10 @@ $\mathbf{z} \sim \mathcal{N}(\mathbf{0}, \mathbf{I}(1-h^2))$ (not $\mathcal{N}(\
 Using knowledge of the prior, the **optimal bandwidth** is chosen so a finite-sample KDE best
 matches the prior:
 
-$$
+```math
 h_{\rm opt} = \min_h \mathrm{KL}\!\left(p(\mathbf{z})\,\|\,q_\phi(\mathbf{z})\right)
 = \max_h\ \mathbb{E}_{\mathbf{z}\sim p(\mathbf{z})}\, q_\phi(\mathbf{z}),
-$$
+```
 
 optimized for a single scalar $h$ with Adam, given latent dimension $l$ and KDE sample count
 $m$. In high dimensions with limited samples, $h_{\rm opt} > 1$, which would drive the encoder
@@ -158,9 +158,9 @@ to collapse. To fix this, the target is rescaled to $\mathcal{N}(\mathbf{0},\alp
 and, by setting the variance equal to the KDE bias $\alpha^2 = 1 - (\alpha h_{\rm opt})^2$, the
 **bias-scaling factor** is
 
-$$
+```math
 \alpha^2 = \frac{1}{1 + h_{\rm opt}^2}, \qquad h_{\rm opt}^{\rm corr} = \alpha\, h_{\rm opt} < 1.
-$$
+```
 
 Because $0 \le \alpha \le 1$, mode collapse is avoided (the system only degenerates as
 $m\to0$ or dimension $\to\infty$). Representative bias-corrected bandwidths ($h_{\rm opt}/h_{\rm opt}^{\rm corr}$):
