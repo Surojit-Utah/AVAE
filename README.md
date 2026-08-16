@@ -46,6 +46,7 @@ Paper (arXiv): https://arxiv.org/pdf/2311.07693
 - [Installation](#installation)
 - [Datasets](#datasets)
 - [Usage](#usage)
+- [Evaluation](#evaluation)
 - [Extending AVAE to a new dataset](#extending-avae-to-a-new-dataset)
 - [Network Architectures & Optimization](#network-architectures--optimization)
 - [Results](#results)
@@ -372,6 +373,60 @@ $`\mathbf{z}\sim\mathcal{N}(\mathbf{0},\mathbf{I}(1-h^2))`$ and pass through the
 Training outputs are written to `logs/{dataset_name}/Run_{run_id}/` (experiment spec,
 generated/reconstructed images, latent covariance/scatter plots, TensorBoard logs, and
 `Models/best_model`, `Models/intermediate_model/epoch_{50,100,…}`, and a final checkpoint).
+
+---
+
+## Evaluation
+
+The `AVAE/eval/` directory contains the complete evaluation pipeline for computing all metrics
+reported in the paper. Four metrics are provided:
+
+1. **FID (Fréchet Inception Distance)** — quality/diversity of generated samples via
+   Inception-v3 statistics (`eval/study_fid/`)
+2. **Precision-Recall (PRD)** — mode coverage and sample quality using the official NeurIPS 2018
+   implementation (`eval/study_prd/`)
+3. **Entropy of Aggregate Posterior** — measuring latent-space distribution uniformity
+   (`eval/entropy/`)
+4. **MSE (Reconstruction Error)** — per-pixel mean squared error on validation data
+   (`eval/mse/`)
+
+Each metric is computed across **5 independent runs** (run_id 1–5) and reported as
+**mean ± std**.
+
+**Quick Start:**
+
+```bash
+cd AVAE/eval
+
+# 1) Compute FID for MNIST (config_id=0)
+cd study_fid/generate_samples/gen_samples
+python generate_samples.py --config_id 0
+
+cd ../../compute_fid
+python compute_n_plot_fid.py --config_id 0
+
+# 2) Compute Precision-Recall-Density (PRD)
+cd ../../study_prd/PRD/precision-recall-distributions
+python prd_from_image_folders.py --dataset_name mnist --method_name avae --eval_mode val
+
+# 3) Compute entropy of aggregate posterior
+cd ../../../entropy
+python compute_entropy.py --config_id 0
+
+# 4) Reconstruction MSE is logged during training
+# See logs/{dataset_name}/Run_{run_id}/mse_error.txt
+```
+
+**Full Documentation:** See [`AVAE/eval/README.md`](AVAE/eval/README.md) for:
+- Step-by-step usage for all metrics
+- Environment variable setup (CELEBA_DATA_DIR, IMAGENET_DATA_DIR)
+- TensorFlow version compatibility notes
+- Pre-computed FID statistics and PRD implementation details
+- Troubleshooting common issues
+
+**Verification Status:** All evaluation scripts have been **verified against the paper's
+reported numbers** (Tables 1–3 in the manuscript). The repository logs match the published
+results, confirming correctness of the evaluation pipeline.
 
 ---
 
