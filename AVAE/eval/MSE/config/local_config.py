@@ -1,0 +1,218 @@
+configurations = \
+{0: {'model_name': "AVAE",
+     'dataset_name': "CIFAR10",
+     'batch_size': 100,
+     'epochs': 100,
+     'latent_dim': 128,
+     'num_filter': 128,
+     'kde_samples': 10000,
+     'update_q_iter_count': 10,         # "iterations to update the KDE samples"
+     'update_KDE_epoch_fraction': 1,    # "epochs to shuffle KDE samples with training data"
+     'print_every_epoch': 1,
+     'save_every_epoch': 10,
+     'dec_reg_strength': 0,
+     'learning_rate': 5e-04,
+     'patience': 10,                     # "patience window for the LR schedular"
+     'factor': 0.5,                     # "reduce the learning rate by 0.5 beyond the patience window"
+     'ori_bandwidth': 1.12,             # "KDE bandwidth"
+     'max_cdf_epsilon': 1 - 1e-01,      # used for computing the epsilon in KL divergence
+     'encoder_use_batch_norm': True,
+     'decoder_use_batch_norm': True,
+     'train_data_noise': False,
+     'train_from_checkpoint': False,
+     'print_model_summary': False,
+     'conv_kernel_initializer_method': 'he_normal',
+     'sigma_init_val': 200,
+     'fid_samples': 10000,
+     'num_eval_data': 10000,  # MSE examples
+     },
+1: {'model_name': "AVAE",
+     'dataset_name': "CelebA",
+     'batch_size': 100,
+     'epochs': 50,
+     'latent_dim': 64,
+     'num_filter': 64,
+     'kde_samples': 20000,
+     'update_q_iter_count': 10,         # "iterations to update the KDE samples"
+     'update_KDE_epoch_fraction': 1,    # "epochs to shuffle KDE samples with training data"
+     'print_every_epoch': 1,
+     'save_every_epoch': 10,
+     'dec_reg_strength': 0,
+     'learning_rate': 5e-04,
+     'patience': 5,                     # "patience window for the LR schedular"
+     'factor': 0.5,                     # "reduce the learning rate by 0.5 beyond the patience window"
+     'ori_bandwidth': 1.02,             # "KDE bandwidth"\
+     'max_cdf_epsilon': 1 - 1e-02,      # used for computing the epsilon in KL divergence
+     'encoder_use_batch_norm': True,
+     'decoder_use_batch_norm': True,
+     'train_data_noise': False,
+     'train_from_checkpoint': False,
+     'print_model_summary': False,
+     'conv_kernel_initializer_method': 'he_normal',
+    'sigma_init_val': 1000,
+    'fid_samples': 10000,
+    'num_eval_data': 10000,  # MSE examples
+    },
+ 2: {'model_name': "AVAE",
+     'dataset_name': "MNIST",
+     'batch_size': 100,
+     'epochs': 50,
+     'latent_dim': 16,
+     'num_filter': 64,
+     'kde_samples': 10000,
+     'update_q_iter_count': 10,  # "iterations to update the KDE samples"
+     'update_KDE_epoch_fraction': 1,  # "epochs to shuffle KDE samples with training data"
+     'print_every_epoch': 1,
+     'save_every_epoch': 10,
+     'dec_reg_strength': 0,
+     'learning_rate': 5e-04,
+     'patience': 5,  # "patience window for the LR schedular"
+     'factor': 0.5,  # "reduce the learning rate by 0.5 beyond the patience window"
+     'ori_bandwidth': 0.72,  # "KDE bandwidth"\
+     'max_cdf_epsilon': 1 - 1e-06,  # used for computing the epsilon in KL divergence
+     'encoder_use_batch_norm': True,
+     'decoder_use_batch_norm': True,
+     'train_data_noise': False,
+     'train_from_checkpoint': False,
+     'print_model_summary': False,
+     'conv_kernel_initializer_method': 'he_normal',
+     'sigma_init_val': 200, #1000,
+     'fid_samples': 10000,
+     'num_eval_data': 10000,           # MSE examples
+     },
+ 3: {'model_name': "AVAE",
+     'dataset_name': "DSprites",
+     'batch_size': 100,
+     'epochs': 35,
+     'latent_dim': 6,
+     'num_filter': 32,
+     'kde_samples': 10000,
+     'update_q_iter_count': 10,  # "iterations to update the KDE samples"
+     'update_KDE_epoch_fraction': 1,  # "epochs to shuffle KDE samples with training data"
+     'print_every_epoch': 1,
+     'save_every_epoch': 10,
+     'dec_reg_strength': 0,
+     'learning_rate': 5e-04,
+     'patience': 5,  # "patience window for the LR schedular"
+     'factor': 0.5,  # "reduce the learning rate by 0.5 beyond the patience window"
+     'ori_bandwidth': 0.47, # "KDE bandwidth"\
+     'max_cdf_epsilon': 1 - 1e-06,  # used for computing the epsilon in KL divergence
+     'encoder_use_batch_norm': False,
+     'decoder_use_batch_norm': False,
+     'train_data_noise': False,
+     'train_from_checkpoint': False,
+     'print_model_summary': False,
+     'conv_kernel_initializer_method': 'he_normal',
+     'sigma_init_val': 200,
+     'fid_samples': 10000,
+     'num_eval_data': 10000,           # MSE examples
+     },
+ 4: {'model_name': "AVAE",
+     'dataset_name': "Shapes3D",
+     'batch_size': 100,
+     'epochs': 60,
+     'latent_dim': 6,
+     'num_filter': 32,
+     'kde_samples': 10000,
+     'update_q_iter_count': 10,  # "iterations to update the KDE samples"
+     'update_KDE_epoch_fraction': 1,  # "epochs to shuffle KDE samples with training data"
+     'print_every_epoch': 1,
+     'save_every_epoch': 10,
+     'dec_reg_strength': 0,
+     'learning_rate': 5e-04,
+     'patience': 100,  # "patience window for the LR schedular"
+     'factor': 0.5,  # "reduce the learning rate by 0.5 beyond the patience window"
+     'ori_bandwidth': 0.47,  # "KDE bandwidth"\
+     'max_cdf_epsilon': 1 - 1e-06,  # used for computing the epsilon in KL divergence
+     'encoder_use_batch_norm': False,
+     'decoder_use_batch_norm': False,
+     'train_data_noise': False,
+     'train_from_checkpoint': False,
+     'print_model_summary': False,
+     'conv_kernel_initializer_method': 'he_normal',
+     'sigma_init_val': 1000,
+     'fid_samples': 10000,
+     'num_eval_data': 10000,           # MSE examples
+     },
+ 5: {'model_name': "AVAE",
+     'dataset_name': "Shapes3D_dim_10",
+     'batch_size': 100,
+     'epochs': 60,
+     'latent_dim': 10,
+     'num_filter': 32,
+     'kde_samples': 10000,
+     'update_q_iter_count': 10,  # "iterations to update the KDE samples"
+     'update_KDE_epoch_fraction': 1,  # "epochs to shuffle KDE samples with training data"
+     'print_every_epoch': 1,
+     'save_every_epoch': 10,
+     'dec_reg_strength': 0,
+     'learning_rate': 5e-04,
+     'patience': 100,  # "patience window for the LR schedular"
+     'factor': 0.5,  # "reduce the learning rate by 0.5 beyond the patience window"
+     'ori_bandwidth': 0.6,  # "KDE bandwidth"\
+     'max_cdf_epsilon': 1 - 1e-06,  # used for computing the epsilon in KL divergence
+     'encoder_use_batch_norm': False,
+     'decoder_use_batch_norm': False,
+     'train_data_noise': False,
+     'train_from_checkpoint': False,
+     'print_model_summary': False,
+     'conv_kernel_initializer_method': 'he_normal',
+     'sigma_init_val': 1000,
+     'fid_samples': 10000,
+     'num_eval_data': 10000,           # MSE examples
+     },
+ 8: {'model_name': "AVAE",
+     'dataset_name': "CIFAR10_Fixed_KDE",
+     'batch_size': 100,
+     'epochs': 100,
+     'latent_dim': 128,
+     'num_filter': 128,
+     'kde_samples': 10000,
+     'update_q_iter_count': 10,  # "iterations to update the KDE samples"
+     'update_KDE_epoch_fraction': 1000,  # "epochs to shuffle KDE samples with training data"
+     'print_every_epoch': 1,
+     'save_every_epoch': 10,
+     'dec_reg_strength': 0,
+     'learning_rate': 5e-04,
+     'patience': 10,  # "patience window for the LR schedular"
+     'factor': 0.5,  # "reduce the learning rate by 0.5 beyond the patience window"
+     'ori_bandwidth': 1.12,
+     'max_cdf_epsilon': 1 - 1e-01,  # used for computing the epsilon in KL divergence
+     'encoder_use_batch_norm': True,
+     'decoder_use_batch_norm': True,
+     'train_data_noise': False,
+     'train_from_checkpoint': False,
+     'print_model_summary': False,
+     'conv_kernel_initializer_method': 'he_normal',
+     'sigma_init_val': 200,
+     'fid_samples': 10000,
+     'num_eval_data': 10000,           # MSE examples
+     },
+ 9: {'model_name': "AVAE",
+     'dataset_name': "MNIST_Fixed_KDE",
+     'batch_size': 100,
+     'epochs': 50,
+     'latent_dim': 16,
+     'num_filter': 64,
+     'kde_samples': 10000,
+     'update_q_iter_count': 10,  # "iterations to update the KDE samples"
+     'update_KDE_epoch_fraction': 1000,  # "epochs to shuffle KDE samples with training data"
+     'print_every_epoch': 1,
+     'save_every_epoch': 10,
+     'dec_reg_strength': 0,
+     'learning_rate': 5e-04,
+     'patience': 5,  # "patience window for the LR schedular"
+     'factor': 0.5,  # "reduce the learning rate by 0.5 beyond the patience window"
+     'ori_bandwidth': 0.72,  # "KDE bandwidth"
+     'max_cdf_epsilon': 1 - 1e-06,  # used for computing the epsilon in KL divergence
+     'encoder_use_batch_norm': True,
+     'decoder_use_batch_norm': True,
+     'train_data_noise': False,
+     'train_from_checkpoint': False,
+     'print_model_summary': False,
+     'conv_kernel_initializer_method': 'he_normal',
+     'sigma_init_val': 1000,
+     'fid_samples': 10000,
+     'num_eval_data': 10000,           # MSE examples
+     },
+ },

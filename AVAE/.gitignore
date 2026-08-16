@@ -17,4 +17,7 @@ logs/
 # does not ignore the README.md file
 !README.md
 
+# ignore Paper directory
+Paper/
+
 __pycache__/
